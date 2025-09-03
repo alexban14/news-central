@@ -2,6 +2,13 @@
 
 namespace App\Providers;
 
+use App\Repositories\ArticleRepository;
+use App\Repositories\ArticleRepositoryInterface;
+use App\Services\Aggregator\NewsAggregator;
+use App\Services\Aggregator\NewsAggregatorInterface;
+use App\Services\Sources\GuardianClient;
+use App\Services\Sources\NewsApiClient;
+use App\Services\Sources\NytClient;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +18,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // services
+        $this->app->bind(NewsAggregatorInterface::class, NewsAggregator::class);
+
+        // repositories
+        $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
+
+        $this->app->singleton(GuardianClient::class);
+        $this->app->singleton(NewsApiClient::class);
+        $this->app->singleton(NytClient::class);
+
+        $this->app->tag([
+            GuardianClient::class,
+            NewsApiClient::class,
+            NytClient::class,
+        ], 'news.source.clients');
+
+        $this->app->when(NewsAggregator::class)
+            ->needs('$clients')
+            ->give(fn($app) => $app->tagged('news.source.clients'));
     }
 
     /**
