@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { store } from '../store/store';
 
 const apiClient = axios.create({
     baseURL: 'http://localhost:6225/api/v1',
@@ -7,10 +8,24 @@ const apiClient = axios.create({
     },
 });
 
+apiClient.interceptors.request.use((config) => {
+    const token = store.getState().auth.token;
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export interface Source {
     id: number;
     name: string;
     slug: string;
+}
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
 }
 
 export interface Article {
@@ -66,4 +81,25 @@ export const getArticle = async (id: string): Promise<{ data: Article }> => {
 export const getSources = async (): Promise<{ data: Source[] }> => {
     const { data } = await apiClient.get('/sources');
     return data;
+};
+
+export const login = async (credentials: any) => {
+    const { data } = await apiClient.post('/login', credentials);
+    return data;
+};
+
+export const register = async (userInfo: any) => {
+    const { data } = await apiClient.post('/register', userInfo);
+    return data;
+};
+
+export const getProfile = async (token: string) => {
+    const { data } = await apiClient.get('/user', {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return data;
+};
+
+export const logout = async () => {
+    await apiClient.post('/logout');
 };
