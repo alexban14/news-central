@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services\Article;
 
-use App\DTO\ArticleDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-interface ArticleRepositoryInterface
+interface ArticleServiceInterface
 {
-    public function upsert(ArticleDTO $dto): void;
-
     public function getArticles(array $filters): LengthAwarePaginator;
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Article extends Model
 {
@@ -15,4 +16,9 @@ class Article extends Model
         'source_id','external_id','title','slug','url','summary','content',
         'image_url','author','published_at','raw',
     ];
+
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class);
+    }
 }

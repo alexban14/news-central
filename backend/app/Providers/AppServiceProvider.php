@@ -6,6 +6,8 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\ArticleRepositoryInterface;
 use App\Services\Aggregator\NewsAggregator;
 use App\Services\Aggregator\NewsAggregatorInterface;
+use App\Services\Article\ArticleService;
+use App\Services\Article\ArticleServiceInterface;
 use App\Services\Sources\GuardianClient;
 use App\Services\Sources\NewsApiClient;
 use App\Services\Sources\NytClient;
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // services
         $this->app->bind(NewsAggregatorInterface::class, NewsAggregator::class);
+        $this->app->bind(ArticleServiceInterface::class, ArticleService::class);
 
         // repositories
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);

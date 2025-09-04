@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\DTO\ArticleDTO;
 use App\Models\Article;
 use App\Models\Source;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class ArticleRepository implements ArticleRepositoryInterface
@@ -30,5 +31,32 @@ class ArticleRepository implements ArticleRepositoryInterface
                 'raw'          => $dto->raw,
             ]
         );
+    }
+
+    public function getArticles(array $filters): LengthAwarePaginator
+    {
+        return Article::query()
+            ->with('source')
+            ->when($filters['search'] ?? null, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('summary', 'like', "%{$search}%")
+                        ->orWhere('content', 'like', "%{$search}%");
+                });
+            })
+            ->when($filters['date_from'] ?? null, function ($query, $date_from) {
+                $query->where('published_at', '>=', $date_from);
+            })
+            ->when($filters['date_to'] ?? null, function ($query, $date_to) {
+                $query->where('published_at', '<=', $date_to);
+            })
+            ->when($filters['source'] ?? null, function ($query, $source) {
+                $query->whereHas('source', function ($query) use ($source) {
+                    $query->where('slug', $source);
+                });
+            })
+            ->latest('published_at')
+            ->paginate(20)
+            ->withQueryString();
     }
 }
