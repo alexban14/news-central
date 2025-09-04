@@ -4,10 +4,14 @@ namespace App\Providers;
 
 use App\Repositories\ArticleRepository;
 use App\Repositories\ArticleRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryInterface;
 use App\Services\Aggregator\NewsAggregator;
 use App\Services\Aggregator\NewsAggregatorInterface;
 use App\Services\Article\ArticleService;
 use App\Services\Article\ArticleServiceInterface;
+use App\Services\Auth\AuthService;
+use App\Services\Auth\AuthServiceInterface;
 use App\Services\Sources\GuardianClient;
 use App\Services\Sources\NewsApiClient;
 use App\Services\Sources\NytClient;
@@ -23,9 +27,11 @@ class AppServiceProvider extends ServiceProvider
         // services
         $this->app->bind(NewsAggregatorInterface::class, NewsAggregator::class);
         $this->app->bind(ArticleServiceInterface::class, ArticleService::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
 
         // repositories
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
 
         $this->app->singleton(GuardianClient::class);
         $this->app->singleton(NewsApiClient::class);
