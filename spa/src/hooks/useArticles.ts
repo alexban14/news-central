@@ -1,10 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import { getArticle, getArticles, ArticleFilters } from '../api';
+import { ArticleFilters, getGeneralArticles, getPersonalizedArticles, getArticle } from '../api';
 
-export const useArticles = (filters: ArticleFilters) => {
+
+
+export const useArticles = (filters: ArticleFilters, isPersonalized: boolean) => {
     return useQuery({
-        queryKey: ['articles', filters],
-        queryFn: () => getArticles(filters),
+        queryKey: ['articles', filters, isPersonalized],
+        queryFn: () => {
+            if (isPersonalized) {
+                return getPersonalizedArticles(filters);
+            } else {
+                return getGeneralArticles(filters);
+            }
+        },
     });
 };
 

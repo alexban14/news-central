@@ -21,6 +21,11 @@ export const ArticleDetailPage = () => {
                     <Typography variant="subtitle1" color="text.secondary" gutterBottom>
                         {new Date(article.publishedAt).toLocaleDateString()} - {article.source.name}
                     </Typography>
+                    {article.author && (
+                        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                            By {article.author}
+                        </Typography>
+                    )}
                     {article.imageUrl && (
                         <img src={article.imageUrl} alt={article.title} style={{ maxWidth: '100%', height: 'auto', margin: '16px 0' }} />
                     )}

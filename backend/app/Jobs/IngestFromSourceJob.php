@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Repositories\ArticleRepositoryInterface;
+use App\Repositories\Article\ArticleRepositoryInterface;
 use App\Services\Sources\SourceClientInterface;
 use DateTimeInterface;
 use Illuminate\Bus\Queueable;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Article;
 
 use App\DTO\ArticleDTO;
 use App\Models\Article;
@@ -35,9 +35,21 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function getArticles(array $filters): LengthAwarePaginator
     {
-        return Article::query()
-            ->with('source')
-            ->when($filters['search'] ?? null, function ($query, $search) {
+        $query = Article::query()
+            ->with('source');
+
+        if (!empty($filters['preferred_sources']) || !empty($filters['preferred_authors'])) {
+            $query->where(function ($q) use ($filters) {
+                if (!empty($filters['preferred_sources'])) {
+                    $q->whereIn('source_id', $filters['preferred_sources']);
+                }
+                if (!empty($filters['preferred_authors'])) {
+                    $q->orWhereIn('author', $filters['preferred_authors']);
+                }
+            });
+        }
+
+        $query->when($filters['search'] ?? null, function ($query, $search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('title', 'like', "%{$search}%")
                         ->orWhere('summary', 'like', "%{$search}%")
@@ -54,9 +66,15 @@ class ArticleRepository implements ArticleRepositoryInterface
                 $query->whereHas('source', function ($query) use ($source) {
                     $query->where('slug', $source);
                 });
-            })
-            ->latest('published_at')
+            });
+
+        return $query->latest('published_at')
             ->paginate(20)
             ->withQueryString();
+    }
+
+    public function getUniqueAuthors(): array
+    {
+        return Article::distinct()->whereNotNull('author')->pluck('author')->toArray();
     }
 }

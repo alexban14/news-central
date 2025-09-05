@@ -15,10 +15,15 @@ class ArticleController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function generalIndex(Request $request)
     {
-        $articles = $this->articleService->getArticles($request->all());
+        $articles = $this->articleService->getArticles($request->all(), null, false);
+        return ArticleResource::collection($articles);
+    }
 
+    public function personalizedIndex(Request $request)
+    {
+        $articles = $this->articleService->getArticles($request->all(), $request->user(), true);
         return ArticleResource::collection($articles);
     }
 

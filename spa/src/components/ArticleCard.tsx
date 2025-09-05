@@ -25,6 +25,11 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
                 <Typography variant="subtitle2" color="text.secondary">
                     {new Date(article.publishedAt).toLocaleDateString()} - {article.source.name}
                 </Typography>
+                {article.author && (
+                    <Typography variant="caption" color="text.secondary">
+                        By {article.author}
+                    </Typography>
+                )}
                 <Typography variant="body2" paragraph>
                     {article.summary}
                 </Typography>

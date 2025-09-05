@@ -68,8 +68,13 @@ export interface ArticleFilters {
     page?: number;
 }
 
-export const getArticles = async (filters: ArticleFilters): Promise<PaginatedArticles> => {
-    const { data } = await apiClient.get('/articles', { params: filters });
+export const getGeneralArticles = async (filters: ArticleFilters): Promise<PaginatedArticles> => {
+    const { data } = await apiClient.get('/articles/general', { params: filters });
+    return data;
+};
+
+export const getPersonalizedArticles = async (filters: ArticleFilters): Promise<PaginatedArticles> => {
+    const { data } = await apiClient.get('/articles/personalized', { params: filters });
     return data;
 };
 
@@ -103,3 +108,14 @@ export const getProfile = async (token: string) => {
 export const logout = async () => {
     await apiClient.post('/logout');
 };
+
+export const getUserPreferences = async (): Promise<UserPreferences> => {
+    const { data } = await apiClient.get('/user/preferences');
+    return data;
+};
+
+export const updateUserPreferences = async (preferences: UserPreferences) => {
+    const { data } = await apiClient.put('/user/preferences', preferences);
+    return data;
+};
+

@@ -21,8 +21,12 @@ export const ArticleFilter = ({ onFilter }: ArticleFilterProps) => {
         resolver: zodResolver(filterSchema),
     });
 
+    const onSubmit = (data: FilterFormValues) => {
+        onFilter(data);
+    };
+
     return (
-        <form onSubmit={handleSubmit(onFilter)} className="mb-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="mb-8">
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={6} md={4}>
                     <TextField
