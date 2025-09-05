@@ -6,7 +6,7 @@ import { register as registerUser } from '../api';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { Container, TextField, Button, Typography, Alert } from '@mui/material';
+import { Container, TextField, Button, Typography, Alert, Box } from '@mui/material';
 
 const registerSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -36,53 +36,63 @@ export const RegisterPage = () => {
     });
 
     return (
-        <Container maxWidth="xs">
-            <Typography variant="h4" component="h1" gutterBottom>
-                Register
-            </Typography>
-            {mutation.isError && (
-                <Alert severity="error">{(mutation.error as any).response?.data?.message || 'An error occurred'}</Alert>
-            )}
-            <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
-                <TextField
-                    {...register('name')}
-                    label="Name"
-                    fullWidth
-                    margin="normal"
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                />
-                <TextField
-                    {...register('email')}
-                    label="Email"
-                    type="email"
-                    fullWidth
-                    margin="normal"
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                />
-                <TextField
-                    {...register('password')}
-                    label="Password"
-                    type="password"
-                    fullWidth
-                    margin="normal"
-                    error={!!errors.password}
-                    helperText={errors.password?.message}
-                />
-                <TextField
-                    {...register('password_confirmation')}
-                    label="Confirm Password"
-                    type="password"
-                    fullWidth
-                    margin="normal"
-                    error={!!errors.password_confirmation}
-                    helperText={errors.password_confirmation?.message}
-                />
-                <Button type="submit" variant="contained" color="primary" fullWidth disabled={mutation.isPending}>
-                    {mutation.isPending ? 'Registering...' : 'Register'}
-                </Button>
-            </form>
-        </Container>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: 'calc(100vh - 128px)',
+            }}
+        >
+            <Container maxWidth="xs">
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Register
+                </Typography>
+                {mutation.isError && (
+                    <Alert severity="error">{(mutation.error as any).response?.data?.message || 'An error occurred'}</Alert>
+                )}
+                <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
+                    <TextField
+                        {...register('name')}
+                        label="Name"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.name}
+                        helperText={errors.name?.message}
+                    />
+                    <TextField
+                        {...register('email')}
+                        label="Email"
+                        type="email"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.email}
+                        helperText={errors.email?.message}
+                    />
+                    <TextField
+                        {...register('password')}
+                        label="Password"
+                        type="password"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.password}
+                        helperText={errors.password?.message}
+                    />
+                    <TextField
+                        {...register('password_confirmation')}
+                        label="Confirm Password"
+                        type="password"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.password_confirmation}
+                        helperText={errors.password_confirmation?.message}
+                    />
+                    <Button type="submit" variant="contained" color="primary" fullWidth disabled={mutation.isPending}>
+                        {mutation.isPending ? 'Registering...' : 'Register'}
+                    </Button>
+                </form>
+            </Container>
+        </Box>
     );
 };

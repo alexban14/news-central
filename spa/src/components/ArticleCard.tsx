@@ -7,25 +7,25 @@ interface ArticleCardProps {
 
 export const ArticleCard = ({ article }: ArticleCardProps) => {
     return (
-        <Card sx={{ display: 'flex', mb: 2 }}>
+        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             {article.imageUrl && (
                 <CardMedia
                     component="img"
-                    sx={{ width: 151 }}
+                    sx={{ height: 140 }}
                     image={article.imageUrl}
                     alt={article.title}
                 />
             )}
-            <CardContent sx={{ flex: 1 }}>
-                <Typography component="h2" variant="h5">
+            <CardContent sx={{ flexGrow: 1, textAlign: 'left' }}>
+                <Typography component="h2" variant="h6">
                     <Link href={`/articles/${article.id}`} underline="hover">
                         {article.title}
                     </Link>
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
+                <Typography variant="subtitle2" color="text.secondary">
                     {new Date(article.publishedAt).toLocaleDateString()} - {article.source.name}
                 </Typography>
-                <Typography variant="subtitle1" paragraph>
+                <Typography variant="body2" paragraph>
                     {article.summary}
                 </Typography>
             </CardContent>

@@ -46,7 +46,7 @@ export const ArticleFilter = ({ onFilter }: ArticleFilterProps) => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
+                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ height: '56px' }}>
                         Filter
                     </Button>
                 </Grid>

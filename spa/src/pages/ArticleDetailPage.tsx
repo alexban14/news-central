@@ -14,7 +14,7 @@ export const ArticleDetailPage = () => {
     return (
         <Container maxWidth="md">
             {article && (
-                <Paper sx={{ p: 4, mt: 4 }}>
+                <Paper sx={{ p: 4, mt: 4, textAlign: 'left' }}>
                     <Typography variant="h3" component="h1" gutterBottom>
                         {article.title}
                     </Typography>

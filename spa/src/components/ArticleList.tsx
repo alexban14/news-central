@@ -8,9 +8,9 @@ interface ArticleListProps {
 
 export const ArticleList = ({ articles }: ArticleListProps) => {
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
             {articles.map((article) => (
-                <Grid item xs={12} key={article.id}>
+                <Grid item xs={12} sm={6} md={4} key={article.id}>
                     <ArticleCard article={article} />
                 </Grid>
             ))}

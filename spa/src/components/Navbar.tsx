@@ -20,7 +20,7 @@ export default function Navbar() {
                 <Typography
                     variant="h6"
                     component="div"
-                    sx={{ flexGrow: 1 }}
+                    sx={{ flexGrow: 1, textAlign: 'left' }}
                 >
                     <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
                         News Central
